@@ -101,18 +101,8 @@ namespace WebApiAuthUsingIdentityUser.Services
                     return BadRequest(new { message = "Wrong user or password!" });
                 }
 
-                var user = await _userManager.FindByNameAsync(model.UserName);
-                if (user == null ||
-                _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password) !=
-                PasswordVerificationResult.Success)
-                {
-                    return BadRequest(new { message = "Error generating Token. Send a message to the administrator for more information!" });
-                }
-                var token = await GetJwtSecurityToken(user);
+                return Ok(new { message = "Login Successful!"
 
-                return Ok(new { message = "Login Successful!",
-                               token = new JwtSecurityTokenHandler().WriteToken(token),
-                               expiration = token.ValidTo
                 });
 
             }
