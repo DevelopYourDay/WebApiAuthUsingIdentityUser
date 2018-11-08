@@ -27,6 +27,15 @@
           "lib/netstandard2.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {}
         }
       },
+      "EntityFramework.Triggers/6.1.1": {
+        "type": "package",
+        "compile": {
+          "lib/net461/EntityFramework.Triggers.dll": {}
+        },
+        "runtime": {
+          "lib/net461/EntityFramework.Triggers.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
         "type": "package",
         "dependencies": {
@@ -4671,6 +4680,16 @@
         "automapper.extensions.microsoft.dependencyinjection.nuspec",
         "lib/netstandard2.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll",
         "lib/netstandard2.0/AutoMapper.Extensions.Microsoft.DependencyInjection.pdb"
+      ]
+    },
+    "EntityFramework.Triggers/6.1.1": {
+      "sha512": "lfCloJQ6JSnxq+GpVen00it7dl+08CghkYnFspw5z1lZF1Zxy/vmb/VFE1wt1M+IsyZGWmpQoZjU+rZcS2BWYg==",
+      "type": "package",
+      "path": "entityframework.triggers/6.1.1",
+      "files": [
+        "entityframework.triggers.6.1.1.nupkg.sha512",
+        "entityframework.triggers.nuspec",
+        "lib/net461/EntityFramework.Triggers.dll"
       ]
     },
     "Microsoft.AspNet.WebApi.Client/5.2.6": {
@@ -12301,6 +12320,7 @@
     ".NETCoreApp,Version=v2.1": [
       "AutoMapper >= 7.0.1",
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 5.0.1",
+      "EntityFramework.Triggers >= 6.1.1",
       "Microsoft.AspNetCore.App >= 2.1.1",
       "Microsoft.AspNetCore.Razor.Design >= 2.1.2",
       "Microsoft.NETCore.App >= 2.1.0",
@@ -12314,11 +12334,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Ricardo\\Documents\\Github\\WebApiAuthUsingIdentityUser\\WebApiAuthUsingIdentityUser\\WebApiAuthUsingIdentityUser\\WebApiAuthUsingIdentityUser.csproj",
+      "projectUniqueName": "C:\\Users\\Ricardo\\Documents\\Github\\WebApiAuthUsingIdentityUser\\WebApiAuthUsingIdentityUser\\WebApiAuthUsingIdentityUser.csproj",
       "projectName": "WebApiAuthUsingIdentityUser",
-      "projectPath": "C:\\Users\\Ricardo\\Documents\\Github\\WebApiAuthUsingIdentityUser\\WebApiAuthUsingIdentityUser\\WebApiAuthUsingIdentityUser\\WebApiAuthUsingIdentityUser.csproj",
+      "projectPath": "C:\\Users\\Ricardo\\Documents\\Github\\WebApiAuthUsingIdentityUser\\WebApiAuthUsingIdentityUser\\WebApiAuthUsingIdentityUser.csproj",
       "packagesPath": "C:\\Users\\Ricardo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Ricardo\\Documents\\Github\\WebApiAuthUsingIdentityUser\\WebApiAuthUsingIdentityUser\\WebApiAuthUsingIdentityUser\\obj\\",
+      "outputPath": "C:\\Users\\Ricardo\\Documents\\Github\\WebApiAuthUsingIdentityUser\\WebApiAuthUsingIdentityUser\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -12356,6 +12376,10 @@
             "target": "Package",
             "version": "[5.0.1, )"
           },
+          "EntityFramework.Triggers": {
+            "target": "Package",
+            "version": "[6.1.1, )"
+          },
           "Microsoft.AspNetCore.App": {
             "suppressParent": "All",
             "target": "Package",
@@ -12384,5 +12408,17 @@
         "warn": true
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'EntityFramework.Triggers 6.1.1' was restored using '.NETFramework,Version=v4.6.1' instead of the project target framework '.NETCoreApp,Version=v2.1'. This package may not be fully compatible with your project.",
+      "libraryId": "EntityFramework.Triggers",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.1"
+      ]
+    }
+  ]
 }

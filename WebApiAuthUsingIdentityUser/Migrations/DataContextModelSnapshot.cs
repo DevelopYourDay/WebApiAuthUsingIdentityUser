@@ -129,6 +129,32 @@ namespace WebApiAuthUsingIdentityUser.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("WebApiAuthUsingIdentityUser.Helpers.Jwt.Models.RefreshTokens", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Inserted");
+
+                    b.Property<string>("IpAdress")
+                        .IsRequired();
+
+                    b.Property<bool>("Revoked");
+
+                    b.Property<string>("Token")
+                        .IsRequired();
+
+                    b.Property<DateTime>("Updated");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RefreshTokens");
+                });
+
             modelBuilder.Entity("WebApiAuthUsingIdentityUser.Models.UserEntity", b =>
                 {
                     b.Property<string>("Id")
@@ -144,9 +170,13 @@ namespace WebApiAuthUsingIdentityUser.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(50);
 
-                    b.Property<string>("LastName");
+                    b.Property<DateTime>("Inserted");
+
+                    b.Property<string>("LastName")
+                        .HasMaxLength(50);
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -167,6 +197,8 @@ namespace WebApiAuthUsingIdentityUser.Migrations
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
+
+                    b.Property<DateTime>("Updated");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);

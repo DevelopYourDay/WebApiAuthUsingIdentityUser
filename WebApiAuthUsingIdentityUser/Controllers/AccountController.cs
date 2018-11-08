@@ -27,69 +27,10 @@ namespace WebApiAuthUsingIdentityUser.Controllers
         private IAccountService _accountService;
         private readonly IMapper _mapper;
 
-        public AccountController(
-            IAccountService accountService,
-            IMapper mapper)
+        public AccountController(IAccountService accountService, IMapper mapper)
         {
             _accountService = accountService;
             _mapper = mapper;
-        }
-
-
-        [HttpPost("create")]
-        [AllowAnonymous]
-        public async Task<IActionResult> Create([FromBody] CreateAccountDto model)
-        {
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState.Values.SelectMany(v => v.Errors).Select(modelError => modelError.ErrorMessage).ToList());
-            }
-
-            //map dto to entity
-            var userEntity = _mapper.Map<UserEntity>(model);
-
-            return await _accountService.Create(userEntity, model.Password);
-
-        }
-
-        // POST: /Account/login
-        [HttpPost("login")]
-        [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody] LoginAccountDto model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState.Values.SelectMany(v => v.Errors).Select(modelError => modelError.ErrorMessage).ToList());
-            }
-
-            //map dto to entity
-            var userEntity = _mapper.Map<UserEntity>(model);
-
-            return await _accountService.Login(userEntity, model.Password);
-
-        }
-
-        [HttpPost("token")]
-        [AllowAnonymous]
-        public async Task<IActionResult> Token([FromBody] TokenAccountDto model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState.Values.SelectMany(v => v.Errors).Select(modelError => modelError.ErrorMessage).ToList());
-            }
-
-            var userEntity = _mapper.Map<UserEntity>(model);
-
-            return await _accountService.Token(userEntity, model.Password);
-
-        }
-
-        // POST: /Account/logout
-        [HttpPost("logout")]
-        public async Task<IActionResult> LogOut()
-        {
-            return await _accountService.LogOut();
         }
 
 
@@ -101,6 +42,22 @@ namespace WebApiAuthUsingIdentityUser.Controllers
             var userDtos = _mapper.Map<IList<GetAllAccountsDto>>(users);
             return Ok(userDtos);
 
+        }
+
+        [HttpPut("updatePassword/{id}")]
+        public IActionResult UpdatePassword(string id, [FromBody]UserUpdatePasswordDto updateUserPasswordDto)
+        {
+            try
+            {
+                // save 
+                _accountService.UpdatePassword(updateUserPasswordDto, id);
+                return Ok(new { message = "Password alterada com sucesso!" });
+            }
+            catch (AppException ex)
+            {
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.Message });
+            }
         }
     }
 }

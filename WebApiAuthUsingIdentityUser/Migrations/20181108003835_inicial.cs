@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebApiAuthUsingIdentityUser.Migrations
 {
-    public partial class Initial : Migration
+    public partial class inicial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -41,12 +41,31 @@ namespace WebApiAuthUsingIdentityUser.Migrations
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     Id = table.Column<string>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true)
+                    FirstName = table.Column<string>(maxLength: 50, nullable: true),
+                    LastName = table.Column<string>(maxLength: 50, nullable: true),
+                    Inserted = table.Column<DateTime>(nullable: false),
+                    Updated = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RefreshTokens",
+                columns: table => new
+                {
+                    Inserted = table.Column<DateTime>(nullable: false),
+                    Updated = table.Column<DateTime>(nullable: false),
+                    Id = table.Column<string>(nullable: false),
+                    Username = table.Column<string>(maxLength: 50, nullable: false),
+                    Token = table.Column<string>(nullable: false),
+                    IpAdress = table.Column<string>(nullable: false),
+                    Revoked = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -211,6 +230,9 @@ namespace WebApiAuthUsingIdentityUser.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "RefreshTokens");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

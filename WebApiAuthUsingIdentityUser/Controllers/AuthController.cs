@@ -1,37 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using WebApiAuthUsingIdentityUser.Models;
-using WebApiAuthUsingIdentityUser.Dtos;
-using WebApiAuthUsingIdentityUser.Services;
-using WebApiAuthUsingIdentityUser.Helpers;
-using WebApiAuthUsingIdentityUser.Dtos.Account;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using WebApiAuthUsingIdentityUser.Dtos.Account;
+using WebApiAuthUsingIdentityUser.Dtos.Auth;
+using WebApiAuthUsingIdentityUser.Models;
+using WebApiAuthUsingIdentityUser.Services;
 
 namespace WebApiAuthUsingIdentityUser.Controllers
 {
     [Authorize]
     [Produces("application/json")]
-    [Route("api/Account")]
-    public class AccountController : ControllerBase
+    [Route("api/auth")]
+    public class AuthController : ControllerBase
     {
-        private IAccountService _accountService;
+
+        private IAuthService _authService;
         private readonly IMapper _mapper;
 
-        public AccountController(
-            IAccountService accountService,
-            IMapper mapper)
+        public AuthController(
+           IAuthService authService,
+      IMapper mapper)
         {
-            _accountService = accountService;
+            _authService = authService;
             _mapper = mapper;
         }
 
@@ -49,7 +43,7 @@ namespace WebApiAuthUsingIdentityUser.Controllers
             //map dto to entity
             var userEntity = _mapper.Map<UserEntity>(model);
 
-            return await _accountService.Create(userEntity, model.Password);
+            return await _authService.Create(userEntity, model.Password);
 
         }
 
@@ -66,13 +60,28 @@ namespace WebApiAuthUsingIdentityUser.Controllers
             //map dto to entity
             var userEntity = _mapper.Map<UserEntity>(model);
 
-            return await _accountService.Login(userEntity, model.Password);
+            return await _authService.Login(userEntity, model.Password);
 
         }
 
-        [HttpPost("token")]
+        // POST: /Account/logout
+        [HttpPost("logout")]
+        public async Task<IActionResult> LogOut([FromBody] LogoutDto model)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState.Values.SelectMany(v => v.Errors).Select(modelError => modelError.ErrorMessage).ToList());
+            }
+
+            var userEntity = _mapper.Map<UserEntity>(model);
+
+            return await _authService.LogOut(model.RefreshToken);
+        }
+
+        [HttpPost("newToken")]
         [AllowAnonymous]
-        public async Task<IActionResult> Token([FromBody] TokenAccountDto model)
+        public async Task<IActionResult> Token([FromBody] CreateNewTokenDto model)
         {
             if (!ModelState.IsValid)
             {
@@ -81,25 +90,7 @@ namespace WebApiAuthUsingIdentityUser.Controllers
 
             var userEntity = _mapper.Map<UserEntity>(model);
 
-            return await _accountService.Token(userEntity, model.Password);
-
-        }
-
-        // POST: /Account/logout
-        [HttpPost("logout")]
-        public async Task<IActionResult> LogOut()
-        {
-            return await _accountService.LogOut();
-        }
-
-
-        // GET: /Account/
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            var users = _accountService.GetAll();
-            var userDtos = _mapper.Map<IList<GetAllAccountsDto>>(users);
-            return Ok(userDtos);
+            return await _authService.CreateToken(userEntity, model.Password, model.RefreshToken);
 
         }
     }

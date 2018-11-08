@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApiAuthUsingIdentityUser.Data;
 
 namespace WebApiAuthUsingIdentityUser.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20181108003835_inicial")]
+    partial class inicial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,6 +131,32 @@ namespace WebApiAuthUsingIdentityUser.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("WebApiAuthUsingIdentityUser.Helpers.Jwt.Models.RefreshTokens", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Inserted");
+
+                    b.Property<string>("IpAdress")
+                        .IsRequired();
+
+                    b.Property<bool>("Revoked");
+
+                    b.Property<string>("Token")
+                        .IsRequired();
+
+                    b.Property<DateTime>("Updated");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RefreshTokens");
+                });
+
             modelBuilder.Entity("WebApiAuthUsingIdentityUser.Models.UserEntity", b =>
                 {
                     b.Property<string>("Id")
@@ -144,9 +172,13 @@ namespace WebApiAuthUsingIdentityUser.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(50);
 
-                    b.Property<string>("LastName");
+                    b.Property<DateTime>("Inserted");
+
+                    b.Property<string>("LastName")
+                        .HasMaxLength(50);
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -167,6 +199,8 @@ namespace WebApiAuthUsingIdentityUser.Migrations
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
+
+                    b.Property<DateTime>("Updated");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);

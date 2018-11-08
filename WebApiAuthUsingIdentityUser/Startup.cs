@@ -21,6 +21,7 @@ using AutoMapper;
 using WebApiAuthUsingIdentityUser.Services;
 using WebApiAuthUsingIdentityUser.Helpers;
 using WebApiAuthUsingIdentityUser.Controllers;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApiAuthUsingIdentityUser
 {
@@ -45,32 +46,44 @@ namespace WebApiAuthUsingIdentityUser
 
             services.AddAutoMapper();
 
-
-            services.AddAuthentication(authenticationOptions =>
+            services.AddAuthentication(x =>
             {
-                authenticationOptions.DefaultScheme = "Cookies";
-                authenticationOptions.DefaultChallengeScheme = "Cookies";
-            }).AddJwtBearer(config =>
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
             {
-                config.TokenValidationParameters = new TokenValidationParameters
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
                 {
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                Configuration.GetSection("AppConfiguration:Key").Value)),
-                    ValidAudience = Configuration.GetSection("AppConfiguration:SiteUrl").Value,
                     ValidateIssuerSigningKey = true,
-                    ValidateLifetime = true,
-                    ValidIssuer = Configuration.GetSection("AppConfiguration:SiteUrl").Value
-                };
-                config.Events = new JwtBearerEvents
-                {
-                    OnAuthenticationFailed = ctx =>
-                    {
-                        ctx.Response.StatusCode = 401;
-                        return Task.FromResult<object>(null);
-                    }
-                };
-            });
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                        Configuration.GetSection("AppConfiguration:Key").Value)),
 
+                    ValidateIssuer = false,
+                    ValidIssuer = Configuration.GetSection("AppConfiguration:SiteUrl").Value,
+
+                    ValidateAudience = false,
+                    ValidAudience = Configuration.GetSection("AppConfiguration:SiteUrl").Value,
+
+                    ValidateLifetime = true
+                };
+
+                x.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                        {
+                            context.Response.Headers.Add("Token-Expired", "true");
+                        }
+                        return Task.CompletedTask;
+                    }
+
+                };
+
+            });
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -96,6 +109,9 @@ namespace WebApiAuthUsingIdentityUser
 
             // configure DI for application services
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

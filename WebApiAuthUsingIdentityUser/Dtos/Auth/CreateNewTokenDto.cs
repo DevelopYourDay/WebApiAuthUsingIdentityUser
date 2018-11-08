@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApiAuthUsingIdentityUser.Dtos.Account
+namespace WebApiAuthUsingIdentityUser.Dtos.Auth
 {
-    public class TokenAccountDto
+    public class CreateNewTokenDto
     {
         [Required]
         [StringLength(50, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 3)]
@@ -16,5 +16,8 @@ namespace WebApiAuthUsingIdentityUser.Dtos.Account
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        [Required]
+        public string RefreshToken { get; set; }
     }
 }

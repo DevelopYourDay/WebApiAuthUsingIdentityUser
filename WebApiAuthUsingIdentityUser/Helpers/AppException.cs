@@ -14,6 +14,9 @@ namespace WebApiAuthUsingIdentityUser.Helpers
 
         public AppException(string message) : base(message) { }
 
+        public AppException(List<string> List) : base(string.Join("\n", List.ToArray())) {
+}
+
         public AppException(string message, params object[] args)
             : base(String.Format(CultureInfo.CurrentCulture, message, args))
         {

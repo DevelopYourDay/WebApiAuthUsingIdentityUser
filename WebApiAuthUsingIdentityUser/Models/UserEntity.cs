@@ -33,8 +33,16 @@ namespace WebApiAuthUsingIdentityUser.Models
         [Key]
         public override string Id { get; set; }
 
+        [StringLength(50, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 3)]
         public string FirstName { get; set; }
 
+        [StringLength(50, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 3)]
         public string LastName { get; set; }
+
+        public DateTime Inserted { get; private set; }
+
+        public DateTime Updated { get; private set; }
+
+
     }
 }

@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "5d78c8ef1e1b2b6ec9f3f298245bd3fe5fb86294"
+    "signature": "7818f5dc2590d5193212c0a5cc9ab24df62594ce"
   },
   "compilationOptions": {
     "defines": [
@@ -26,6 +26,7 @@
         "dependencies": {
           "AutoMapper": "7.0.1",
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "5.0.1",
+          "EntityFramework.Triggers": "6.1.1",
           "Microsoft.AspNetCore.App": "2.1.1",
           "Microsoft.AspNetCore.Razor.Design": "2.1.2",
           "Microsoft.NETCore.App": "2.1.0",
@@ -65,6 +66,17 @@
         },
         "compile": {
           "lib/netstandard2.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {}
+        }
+      },
+      "EntityFramework.Triggers/6.1.1": {
+        "runtime": {
+          "lib/net461/EntityFramework.Triggers.dll": {
+            "assemblyVersion": "6.1.0.0",
+            "fileVersion": "6.1.0.0"
+          }
+        },
+        "compile": {
+          "lib/net461/EntityFramework.Triggers.dll": {}
         }
       },
       "Microsoft.AspNetCore.Razor.Design/2.1.2": {},
@@ -3499,6 +3511,13 @@
       "sha512": "sha512-FsPcuVkaAj232P6yrSxnQybBnwawvsg3C65l+BDShGaU9jfANGjMY2evNlQ8RAEezrutpeQT9LFWQJ+sXhaHPw==",
       "path": "automapper.extensions.microsoft.dependencyinjection/5.0.1",
       "hashPath": "automapper.extensions.microsoft.dependencyinjection.5.0.1.nupkg.sha512"
+    },
+    "EntityFramework.Triggers/6.1.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-lfCloJQ6JSnxq+GpVen00it7dl+08CghkYnFspw5z1lZF1Zxy/vmb/VFE1wt1M+IsyZGWmpQoZjU+rZcS2BWYg==",
+      "path": "entityframework.triggers/6.1.1",
+      "hashPath": "entityframework.triggers.6.1.1.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Razor.Design/2.1.2": {
       "type": "package",
