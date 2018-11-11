@@ -28,11 +28,18 @@ namespace WebApiAuthUsingIdentityUser.Helpers
             CreateMap<LogoutDto, UserEntity>();
 
             // Account Mappers
-            CreateMap<UserEntity, UserUpdatePasswordDto>();
-            CreateMap<UserUpdatePasswordDto, UserEntity>();
+            CreateMap<UserEntity, UpdateUserPasswordDto>();
+            CreateMap<UpdateUserPasswordDto, UserEntity>();
 
             CreateMap<UserEntity, GetAllAccountsDto>();
             CreateMap<GetAllAccountsDto, UserEntity>();
+
+
+            CreateMap<UserEntity, GetUserByEmailOrIdOrUsernameDto>();
+            CreateMap<GetUserByEmailOrIdOrUsernameDto, UserEntity>();
+
+            CreateMap<UserEntity, UpdateUserAccountDto>();
+            CreateMap<UpdateUserAccountDto, UserEntity>();
 
         }
     }

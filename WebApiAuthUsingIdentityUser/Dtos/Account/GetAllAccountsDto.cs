@@ -10,15 +10,10 @@ namespace WebApiAuthUsingIdentityUser.Dtos.Account
     {
 
         public string Id { get; set; }
-
         public string Email { get; set; }
-
         public string FirstName { get; set; }
-
         public string LastName { get; set; }
-
         public string PhoneNumbe { get; set; }
-
         public DateTimeOffset? LockoutEnd { get; set; }
         public bool TwoFactorEnabled { get; set; }
         public bool PhoneNumberConfirmed { get; set; }

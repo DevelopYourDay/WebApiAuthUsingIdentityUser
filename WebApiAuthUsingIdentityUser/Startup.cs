@@ -96,7 +96,7 @@ namespace WebApiAuthUsingIdentityUser
                 options.Password.RequiredUniqueChars = 1;
 
                 // Lockout settings.
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(30);
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.AllowedForNewUsers = true;
 
@@ -105,7 +105,11 @@ namespace WebApiAuthUsingIdentityUser
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = true;
 
+                options.SignIn.RequireConfirmedEmail = true;
+
             });
+
+
 
             // configure DI for application services
             services.AddScoped<IAccountService, AccountService>();

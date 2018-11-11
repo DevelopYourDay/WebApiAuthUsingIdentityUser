@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebApiAuthUsingIdentityUser.Dtos.Account
 {
-    public class UserUpdatePasswordDto
+    public class UpdateUserPasswordDto
     {
 
         [Required]
@@ -22,7 +22,7 @@ namespace WebApiAuthUsingIdentityUser.Dtos.Account
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare("NewPassword", ErrorMessage = "The password and confirmation password do not match.")]
         public string NewPasswordConfirmation { get; set; }
     }
 }
