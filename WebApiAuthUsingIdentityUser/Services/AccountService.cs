@@ -82,14 +82,14 @@ namespace WebApiAuthUsingIdentityUser.Services
                 throw new AppException("The old password is the same as the new password. Then the password does not need to be changed.");
 
             var user = _context.Users.Find(idUser);
-                if (user == null)
-                    throw new AppException("User not found");
+            if (user == null)
+                throw new AppException("User not found");
 
-            if ( _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, userUpdatePasswordDto.OldPassword) != PasswordVerificationResult.Success)
+            if (_passwordHasher.VerifyHashedPassword(user, user.PasswordHash, userUpdatePasswordDto.OldPassword) != PasswordVerificationResult.Success)
                 throw new AppException("OldPassword wrong!");
 
-           var result = await _userManager.ChangePasswordAsync(user, userUpdatePasswordDto.OldPassword, userUpdatePasswordDto.NewPassword);
-            if(!result.Succeeded)
+            var result = await _userManager.ChangePasswordAsync(user, userUpdatePasswordDto.OldPassword, userUpdatePasswordDto.NewPassword);
+            if (!result.Succeeded)
                 throw new AppException("Um problema alterar a password!");
 
         }
@@ -113,61 +113,61 @@ namespace WebApiAuthUsingIdentityUser.Services
 
         public async Task UpdateUserAccountAsync(UpdateUserAccountDto userParams, string idUser)
         {
-                if (userParams == null)
-                    throw new AppException("The data provided is not correct");
+            if (userParams == null)
+                throw new AppException("The data provided is not correct");
 
             var user = await _userManager.FindByIdAsync(idUser);
-                if (user == null)
-                    throw new AppException("Não existe registo do utilizador!");
+            if (user == null)
+                throw new AppException("Não existe registo do utilizador!");
 
             var userEntityUsername = await _userManager.FindByNameAsync(userParams.UserName);
-                 if (userEntityUsername != null)
-                    throw new AppException("Username is already assigned to another user!");
+            if (userEntityUsername != null)
+                throw new AppException("Username is already assigned to another user!");
 
             user.UserName = userParams.UserName;
             user.FirstName = userParams.FirstName;
             user.LastName = userParams.LastName;
 
-           var resultUpdateUser =  await _userManager.UpdateAsync(user);
+            var resultUpdateUser = await _userManager.UpdateAsync(user);
             if (!resultUpdateUser.Succeeded)
                 throw new AppException("Pedimos desculpa mas ocorreu um problema ao actualizar a sua conta. Tente novamente mais tarde!.");
         }
 
         public async Task RequestUpdateEmail(UpdateUSerEmailAccountDto userParams, string idUser, IUrlHelper url)
-        { 
-                if (userParams == null || idUser == null)
-                    throw new AppException("The data provided is not correct");
+        {
+            if (userParams == null || idUser == null)
+                throw new AppException("The data provided is not correct");
 
-                var user = await _userManager.FindByIdAsync(idUser);
-                    if (user == null)
-                        throw new AppException("Utilizador Invalido!");
+            var user = await _userManager.FindByIdAsync(idUser);
+            if (user == null)
+                throw new AppException("Utilizador Invalido!");
 
-                //if (userParams.Email.Equals(user.Email, StringComparison.InvariantCultureIgnoreCase))
-                //    throw new AppException("O seu novo email e o mesmo da sua actual conta! Por favor indique um email diferente.");
+            //if (userParams.Email.Equals(user.Email, StringComparison.InvariantCultureIgnoreCase))
+            //    throw new AppException("O seu novo email e o mesmo da sua actual conta! Por favor indique um email diferente.");
 
-                //var userEntityUsername = await _userManager.FindByEmailAsync(userParams.Email);
-                //    if (userEntityUsername != null)
-                //        throw new AppException("Email is already assigned to another user!");
+            //var userEntityUsername = await _userManager.FindByEmailAsync(userParams.Email);
+            //    if (userEntityUsername != null)
+            //        throw new AppException("Email is already assigned to another user!");
 
-                var token = await _userManager.GenerateChangeEmailTokenAsync(user, userParams.Email);
+            var token = await _userManager.GenerateChangeEmailTokenAsync(user, userParams.Email);
 
-                var resetLink = url.Action("UpdateEmailConfirmationTokenAsync", "Account", 
-                    new { token = token, userId = user.Id, newEmail = userParams.Email }, protocol: _httpContext.HttpContext.Request.Scheme);
+            var resetLink = url.Action("UpdateEmailConfirmationTokenAsync", "Account",
+                new { token = token, userId = user.Id, newEmail = userParams.Email }, protocol: _httpContext.HttpContext.Request.Scheme);
 
-                    Helpers.SendGrid sendEmail = new Helpers.SendGrid(_configuration);
+            Helpers.SendGrid sendEmail = new Helpers.SendGrid(_configuration);
 
-                     await sendEmail.PostMessageUpdateEmail(userParams.Email, resetLink);
+            await sendEmail.PostMessageUpdateEmail(userParams.Email, resetLink);
         }
 
         public async Task UpdateEmailConfirmationToken(string token, string userID, string newEmail)
         {
             var user = await _userManager.FindByIdAsync(userID);
-                 if (user == null)
-                    throw new AppException("Utilizador Invalido!");
+            if (user == null)
+                throw new AppException("Utilizador Invalido!");
 
             var changeEmail = await _userManager.ChangeEmailAsync(user, newEmail, token);
-                if (!changeEmail.Succeeded)
-                    throw new AppException("Um erro ocorreu a Alterar o email!");    
+            if (!changeEmail.Succeeded)
+                throw new AppException("Um erro ocorreu a Alterar o email!");
         }
     }
 }

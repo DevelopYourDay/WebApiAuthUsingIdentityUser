@@ -93,17 +93,17 @@ namespace WebApiAuthUsingIdentityUser.Services
         public async Task<IActionResult> Login(LoginAccountDto model)
         {
             var user = await _userManager.FindByNameAsync(model.UserName);
-                if (user == null)
-                    throw new AppException("Wrong user or password!");
+            if (user == null)
+                throw new AppException("Wrong user or password!");
 
             var emailConfirmation = await _userManager.IsEmailConfirmedAsync(user);
-                if (emailConfirmation == false)
-                    throw new AppException("Precisas de confirmar o teu registo para continuar. Por favor confirma o teu email!");
-     
+            if (emailConfirmation == false)
+                throw new AppException("Precisas de confirmar o teu registo para continuar. Por favor confirma o teu email!");
+
 
             var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: false, lockoutOnFailure: true);
-                //if (!result.Succeeded)
-                //  throw new AppException("Wrong user or password!");
+            //if (!result.Succeeded)
+            //  throw new AppException("Wrong user or password!");
 
             await UserIsLockoutAsync(user, result);
 
@@ -155,42 +155,42 @@ namespace WebApiAuthUsingIdentityUser.Services
         public async Task<IActionResult> CreateToken(CreateNewTokenDto model)
         {
 
-                var user = await _userManager.FindByNameAsync(model.UserName);
-                if (user == null || _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, model.Password) != PasswordVerificationResult.Success)
-                    throw new AppException("Wrong user or password!");
-               
-                // generate token
-                var token = await GetJwtSecurityToken(user);
+            var user = await _userManager.FindByNameAsync(model.UserName);
+            if (user == null || _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, model.Password) != PasswordVerificationResult.Success)
+                throw new AppException("Wrong user or password!");
 
-                // Checks the old refreshToken exists is valid and exists
-                if (!_context.RefreshTokens.Any(x => x.Username == model.UserName && x.Revoked == false && x.Token == model.RefreshToken))
-                    throw new AppException("Wrong parameters!");    // error 400
+            // generate token
+            var token = await GetJwtSecurityToken(user);
 
-                // generate token refresh token
-                RefreshTokens NewRefreshToken = GenerateRefreshToken(user);
+            // Checks the old refreshToken exists is valid and exists
+            if (!_context.RefreshTokens.Any(x => x.Username == model.UserName && x.Revoked == false && x.Token == model.RefreshToken))
+                throw new AppException("Wrong parameters!");    // error 400
 
-                //Update refreshToken
-                RefreshTokens oldRefreshToken = _context.RefreshTokens.Single( x => x.Username == model.UserName && x.Revoked == false && x.Token == model.RefreshToken);
-                if (oldRefreshToken == null)
-                    throw new AppException("Wrong parameters oldRefreshToken!"); // error 400
-                
-                var resultRemove = _context.RefreshTokens.Remove(oldRefreshToken);
-                var resultAdd = _context.RefreshTokens.AddAsync(NewRefreshToken);
-                await _context.SaveChangesAsync();
+            // generate token refresh token
+            RefreshTokens NewRefreshToken = GenerateRefreshToken(user);
 
-                return Ok(new
-                {
-                    access_token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expires_in = token.ValidTo,
-                    refresh_token = NewRefreshToken.Token
-                });
+            //Update refreshToken
+            RefreshTokens oldRefreshToken = _context.RefreshTokens.Single(x => x.Username == model.UserName && x.Revoked == false && x.Token == model.RefreshToken);
+            if (oldRefreshToken == null)
+                throw new AppException("Wrong parameters oldRefreshToken!"); // error 400
 
-            
+            var resultRemove = _context.RefreshTokens.Remove(oldRefreshToken);
+            var resultAdd = _context.RefreshTokens.AddAsync(NewRefreshToken);
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                access_token = new JwtSecurityTokenHandler().WriteToken(token),
+                expires_in = token.ValidTo,
+                refresh_token = NewRefreshToken.Token
+            });
+
+
         }
 
         public async Task SendEmailFromConfirmation(string email, IUrlHelper url)
         {
-            if(email == null)
+            if (email == null)
                 throw new AppException("Os dados para confirmar o email nao estao correctos!");
 
             var userEntity = await _userManager.FindByEmailAsync(email);
@@ -215,7 +215,7 @@ namespace WebApiAuthUsingIdentityUser.Services
 
         public async Task EmailConfirmationAfterRegistration(string token, string email)
         {
-            if(token == null || email == null)
+            if (token == null || email == null)
                 throw new AppException("Os dados para a confirmação de email nao estao corretos!");
 
             var user = await _userManager.FindByEmailAsync(email);
@@ -257,7 +257,7 @@ namespace WebApiAuthUsingIdentityUser.Services
                 throw new AppException("Foi impossivel enviar o email para o reset a password! Por favor contactar um administrador");
 
         }
-        
+
 
         public async Task NewPasswordAfterForgetPassword(NewPasswordDto forgetPasswordDto, string token, string id)
         {
@@ -275,7 +275,7 @@ namespace WebApiAuthUsingIdentityUser.Services
                 throw new AppException("Utilizador Invalido!");
 
             var resetPassword = await _userManager.ResetPasswordAsync(user, token, forgetPasswordDto.Password);
-            if(!resetPassword.Succeeded)
+            if (!resetPassword.Succeeded)
                 throw new AppException("Não foi possivel efectuar o reset a sua password. \nDos dados necessarios para realizar esta operação alguns nao se encontram corretos!");
 
         }
@@ -335,17 +335,17 @@ namespace WebApiAuthUsingIdentityUser.Services
             if (await _userManager.IsLockedOutAsync(user))
                 throw new AppException("Your account has been locked out for {0} minutes due to multiple failed login attempts.", _userManager.Options.Lockout.DefaultLockoutTimeSpan);
 
-            if(await _userManager.GetLockoutEnabledAsync(user) && !valideCredencials.Succeeded)
+            if (await _userManager.GetLockoutEnabledAsync(user) && !valideCredencials.Succeeded)
             {
 
                 if (await _userManager.IsLockedOutAsync(user))
                     throw new AppException("Your account has been locked out for {0} minutes due to multiple failed login attempts.", _userManager.Options.Lockout.DefaultLockoutTimeSpan);
 
-                
-                    int accessFailedCount = await _userManager.GetAccessFailedCountAsync(user);
 
-                    int attemptsLeft = _userManager.Options.Lockout.MaxFailedAccessAttempts - accessFailedCount;
-                         throw new AppException("Invalid credentials. You have {0} more attempt(s) before your account gets locked out.", attemptsLeft);
+                int accessFailedCount = await _userManager.GetAccessFailedCountAsync(user);
+
+                int attemptsLeft = _userManager.Options.Lockout.MaxFailedAccessAttempts - accessFailedCount;
+                throw new AppException("Invalid credentials. You have {0} more attempt(s) before your account gets locked out.", attemptsLeft);
             }
 
         }

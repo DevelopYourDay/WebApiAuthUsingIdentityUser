@@ -66,7 +66,7 @@ namespace WebApiAuthUsingIdentityUser.Controllers
         }
 
         //get user by Email or Id our Username
-        [HttpGet ("getuserby/{userparms}")]
+        [HttpGet("getuserby/{userparms}")]
         public IActionResult GetUserBy(string userparms)
         {
             try
@@ -93,7 +93,7 @@ namespace WebApiAuthUsingIdentityUser.Controllers
                 }
 
                 // save 
-               await  _accountService.RequestUpdateEmail(updateUserPasswordDto, id, Url);
+                await _accountService.RequestUpdateEmail(updateUserPasswordDto, id, Url);
                 return Ok(new { message = "Por favor consulte o seu email para confirmar a alteração!" });
             }
             catch (AppException ex)
@@ -113,13 +113,13 @@ namespace WebApiAuthUsingIdentityUser.Controllers
                 await _accountService.UpdateEmailConfirmationToken(token, userId, newEmail);
                 return RedirectPermanent("https://www.google.com");
             }
-            catch (AppException )
+            catch (AppException)
             {
                 return RedirectPermanent("https://www.sapo.com");
             }
         }
 
-        
+
         [HttpPut("ChangeUserProfile/{id}")]
         public async Task<IActionResult> UpdateUserProfile(string id, [FromBody]UpdateUserAccountDto updateUserAccountDto)
         {
