@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAAas0hUfCyE2/YCaEmoMfyQAAAAACAAAAAAAQZgAAAAEAACAAAAAHqUgGzit1Rj7n33EY4KqZtd1SSqZz0UHaCjsc5UuDewAAAAAOgAAAAAIAACAAAACAjnRIJHw4DGYbD/GwgOz3ov3FlewQr6O/h3kIwhbgkYAAAACP060p4LWAnJ7mAqBDPv1h0GKYKkoe/z7L3mPtGf+fO3qXb2rcYpsXGt1oJytm7bd44hsiTxz20XS+Kc3DbiLwqiZVgboFiOeNjhljpdnDNLRCUT8fRWRvrsGxWqDDPEP+GqQpQMnoVqOoGNMpWpACmZsRR01vqsWI4BQL0yLZ2EAAAAA90z3s6BwoWsYNYZY//u5FGvEvJicbAUc2+FfX4U5PF3L6AoTGHyiH3AHoJ3E3TmipAl+gWjRh6he3ChpPk9MC</EncryptedPassword>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DataContext">
+      <Value>Data Source=tcp:webpaiidentity.database.windows.net,1433%3bInitial Catalog=DataContext-WebApiAuthUsingIdentityUser%3bUser ID=sqluser%3bPassword=TEste112233</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="WebApiAuthUsingIdentityUser.Data.DataContext">
+      <Value>Data Source=tcp:webpaiidentity.database.windows.net,1433%3bInitial Catalog=DataContext-WebApiAuthUsingIdentityUser%3bUser ID=sqluser%3bPassword=TEste112233</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>
